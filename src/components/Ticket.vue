@@ -31,7 +31,7 @@ export default {
     height: 32px;
     width: 32px;
     text-align: center;
-    border: 2px solid;
+    border: 1px solid #555;
     font-size: 1rem;
     font-family: "Jetbrains Mono";
     font-weight: bold;

@@ -1,17 +1,30 @@
 <template>
   <div id="app">
-    <TicketPage />
-    <TicketPage />
+    <TicketPage :page-color="getRandomColor()" />
+    <TicketPage :page-color="getRandomColor()" />
   </div>
 </template>
 
 <script>
 import TicketPage from "./components/TicketPage.vue";
-
+const colors = [
+  "azure",
+  "honeydew",
+  "lavenderblush",
+  "ivory",
+  "aliceblue",
+  "seashell"
+];
 export default {
   name: "App",
   components: {
     TicketPage
+  },
+  methods: {
+    getRandomColor() {
+      const index = Math.floor(Math.random() * colors.length);
+      return colors[index];
+    }
   }
 };
 </script>
@@ -19,5 +32,8 @@ export default {
 #app {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin: auto;
+  width: max-content;
+  grid-gap: 1rem;
 }
 </style>

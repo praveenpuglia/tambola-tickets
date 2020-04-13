@@ -1,5 +1,5 @@
 <template>
-  <div class="ticket-page">
+  <div class="ticket-page" :style="{ 'background-color': pageColor }">
     <Ticket
       v-for="(ticket, index) in tickets"
       :key="index"
@@ -13,6 +13,9 @@ import Ticket from "./Ticket";
 export default {
   name: "TicketPage",
   components: { Ticket },
+  props: {
+    pageColor: String
+  },
   computed: {
     sets() {
       const allNumbers = this.allNumbers();
@@ -129,16 +132,21 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
+      console.log(numbers);
       const ticket = this.getNewTicket();
       numbers.forEach(number => {
-        const column = this.getBelongingColumnIndex(number);
-        const availableRowIndex = this.getAvailableRowIndex(ticket);
-        ticket[availableRowIndex][column] = number;
-        for (let i = availableRowIndex; i < 3; i++) {
-          // if place is available then put the number in there,
-          // otherwise do nothing.
-          if (!ticket[i][column]) {
-            ticket[i][column] = number;
+        debugger;
+        let availableRowIndex = 0;
+        for (let i = 0; i < 3; i++) {
+          const columnIndex = this.getBelongingColumnIndex(number);
+          const numbersInRow = ticket[i].filter(Boolean).length;
+          if (numbersInRow >= 5) {
+            continue;
+          }
+          if (this.canPlaceNumber(ticket, i, columnIndex)) {
+            availableRowIndex = i;
+            ticket[availableRowIndex][columnIndex] = number;
+            break;
           }
         }
       });
@@ -152,7 +160,9 @@ export default {
 .ticket-page {
   max-width: 768px;
   border: 1px solid;
-  margin: auto;
   padding: 1rem;
+}
+.ticket {
+  margin-bottom: 1rem;
 }
 </style>
