@@ -10,6 +10,7 @@
 
 <script>
 import Ticket from "./Ticket";
+import { shuffle } from "lodash-es";
 export default {
   name: "TicketPage",
   components: { Ticket },
@@ -17,6 +18,12 @@ export default {
     pageColor: String
   },
   computed: {
+    /**
+     * We divide the numbers 1-90 into 9 buckets.
+     * The first bucket has numbers from 1-9,
+     * rest of the buckets all have 10 numbers each. e.g. 10-19, 20-29
+     * except the last one, that has 11 numbers. 80-90
+     */
     sets() {
       const allNumbers = this.allNumbers();
       const sets = [];
@@ -31,12 +38,17 @@ export default {
       }
       return sets;
     },
+    /**
+     * The tickets baby!
+     */
     tickets() {
       const allNumbers = this.allNumbers();
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const pickedNumbers = [];
       return tickets.map((ticket, index) => {
-        if (index === 5) {
+        // For the last ticket, we short circuit it
+        // Because at times the following while loop results in infinite loop.
+        if (tickets.length - 1 === index) {
           const numbersSet = new Set(allNumbers);
           const pickedNumbersSet = new Set(pickedNumbers);
           const remainingNumbers = Array.from(
@@ -47,19 +59,31 @@ export default {
           const newTicket = this.getNewTicketFromList(remainingNumbers);
           ticket = [...newTicket];
         } else {
+          // We wanna do the work of filling numbers into ticket
+          // till we have some space.
           while (this.getTicketNumbersCount(ticket) < 15) {
+            // We pick a number from a list of numbers that aren't used.
+            // For this we pass in the allMumbers array and the pickedNumbers
+            // array. We find the list of available numbers to pick from that
+            // list
             const randomNum = this.pickRandom(allNumbers, pickedNumbers);
-
-            // Making sure the number isn't already placed in ticket
-            if (pickedNumbers.includes(randomNum)) {
-              continue;
-            }
+            // Does the ticket already have the picked Number?
+            // If it does, we do nothing and try to fill another
+            // number into the ticket.
+            // Otherwise, we want to find out if we can place this number.
             if (!this.ifTicketHasNumber(ticket, randomNum)) {
-              // ticket
+              // Since we do row-first filling, we want to find out
+              // which row is now available for filling.
               const selectedRowIndex = this.getAvailableRowIndex(ticket);
+              // We also want to find out which column does the number can
+              // go to.
               const belongingColumnIndex = this.getBelongingColumnIndex(
                 randomNum
               );
+              // Very Important: We now want to find out if we can actually
+              // place the number in that row, column position. That is
+              // if that place is not already occupied, we can safely
+              // put it in there.
               if (
                 this.canPlaceNumber(
                   ticket,
@@ -67,6 +91,8 @@ export default {
                   belongingColumnIndex
                 )
               ) {
+                // If it can really be placed in that cell, we do that
+                // and we also add the number to the list of pickedNumbers
                 this.placeNumber(
                   randomNum,
                   ticket,
@@ -83,12 +109,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * All the numbers
+     */
     allNumbers() {
       return new Array(90).fill(0).map((_, index) => index + 1);
     },
-    shouldPick() {
-      return Math.random() < 0.5;
-    },
+    /**
+     * Finds the diff between all the numbers and the picked numbers
+     * and then picks a random number out of that available number list
+     */
     pickRandom(numbers, pickedNumbers) {
       const numbersSet = new Set(numbers);
       const pickedNumbersSet = new Set(pickedNumbers);
@@ -97,31 +127,58 @@ export default {
       );
       let val =
         availableNumbers[Math.floor(Math.random() * availableNumbers.length)];
-      if (val) {
-        return val;
-      } else {
-        this.pickRandom(numbers, pickedNumbers);
-      }
+      return val;
     },
+    /**
+     * If the ticket already has the number.
+     * Since a ticket is a 2-D array, flattening it
+     * gives a nice 1-D array to search for.
+     */
     ifTicketHasNumber(ticket, number) {
       return ticket.flat().includes(number);
     },
+    /**
+     * Get the next available row in the ticket
+     * where a number can be placed. This assumes
+     * that we do row-wise filling
+     */
     getAvailableRowIndex(ticket) {
       const count = this.getTicketNumbersCount(ticket);
-      return count >= 10 ? 2 : count >= 5 ? 1 : 0;
+      if (count < 5) {
+        return 0;
+      } else if (count >= 5 && count < 10) {
+        return 1;
+      } else {
+        return 2;
+      }
     },
+    /**
+     * How many numbers have we already filled in the ticket?
+     */
     getTicketNumbersCount(ticket) {
       return ticket.flat().filter(Boolean).length;
     },
+    /**
+     * In which column does the passed in number belong?
+     * We find it out by looking at the `this.sets`
+     */
     getBelongingColumnIndex(number) {
       return this.sets.findIndex(set => set.includes(number));
     },
+    /**
+     * Can we actually place a number into the passed in
+     * row / column index in the ticket?
+     */
     canPlaceNumber(ticket, rowIndex, colIndex) {
       if (ticket[rowIndex][colIndex]) {
         return false;
       }
       return true;
     },
+    /**
+     * Place the number at the given row/column index
+     * in the ticket.
+     */
     placeNumber(number, ticket, rowIndex, colIndex) {
       ticket[rowIndex][colIndex] = number;
     },
@@ -134,6 +191,7 @@ export default {
     getNewTicketFromList(numbers) {
       // console.log(numbers);
       const ticket = this.getNewTicket();
+      numbers = shuffle(numbers);
       numbers.forEach(number => {
         // debugger;
         let availableRowIndex = 0;
