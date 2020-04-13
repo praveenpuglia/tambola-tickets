@@ -33,7 +33,7 @@ export default {
     },
     tickets() {
       const allNumbers = this.allNumbers();
-      const tickets = new Array(6).fill(0).map(() => this.getNewTicket());
+      const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const pickedNumbers = [];
       return tickets.map((ticket, index) => {
         if (index === 5) {
@@ -132,10 +132,10 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
-      console.log(numbers);
+      // console.log(numbers);
       const ticket = this.getNewTicket();
       numbers.forEach(number => {
-        debugger;
+        // debugger;
         let availableRowIndex = 0;
         for (let i = 0; i < 3; i++) {
           const columnIndex = this.getBelongingColumnIndex(number);
