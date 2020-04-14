@@ -18,3 +18,4 @@ https://praveenpuglia.com/tambola-tickets
 ## Todo
 - [ ] Move computation to a Web Worker to keep the UI responsive in some cases where the generation fails to due call stack overflow.
 - [ ] Guarantee there will be no stack overflow.
+- [ ] sort the numbers in their respective columns.
