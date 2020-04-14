@@ -1,4 +1,8 @@
 # Tambola Tickets Generator
+https://praveenpuglia.com/tambola-tickets
+
+> 🚨At times, the app may seem unresponsive because the generation would fail for one or more tickets. In those times, wait up to 10 seconds or reload. 
+
 ![Screenshot](./screenshot.png)
 
 ## Rules
