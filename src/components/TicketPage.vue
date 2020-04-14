@@ -58,7 +58,6 @@ export default {
      * The tickets baby!
      */
     getTickets() {
-      console.log("getTickets", this.$attrs.id);
       const allNumbers = this.allNumbers;
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const generatedTickets = tickets.map((ticket, index) => {
@@ -80,21 +79,18 @@ export default {
         // Are all 6 valid tickets? if not, regenrate the tickets.
         return ticket;
       });
-      debugger;
       const validityMatrix = generatedTickets.map(ticket =>
         this.validateTicket(ticket)
       );
-      console.log(validityMatrix);
 
       const isAnyInvalid = validityMatrix.filter(Boolean).length !== 6;
       if (isAnyInvalid) {
         // Reset all picked numbers;
         this.pickedNumbers = [];
         const newTickets = this.getTickets();
-        console.log("Completed Generaton", this.$attrs.id);
+
         return newTickets;
       } else {
-        console.log("Completed Generaton", this.$attrs.id);
         return generatedTickets;
       }
     },
@@ -249,11 +245,9 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
-      console.log(numbers);
       const ticket = this.getNewTicket();
       numbers = shuffle(numbers);
       numbers.forEach(number => {
-        // debugger;
         let availableRowIndex = 0;
         for (let i = 0; i < 3; i++) {
           const columnIndex = this.getBelongingColumnIndex(number);
