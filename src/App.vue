@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <TicketPage :page-color="getRandomColor()" />
-    <TicketPage :page-color="getRandomColor()" />
+    <TicketPage id="page-1" :page-color="getRandomColor()" />
+    <TicketPage id="page-2" :page-color="getRandomColor()" />
   </div>
 </template>
 

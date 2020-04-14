@@ -23,6 +23,9 @@ export default {
     };
   },
   computed: {
+    tickets() {
+      return this.getTickets();
+    },
     /**
      * We divide the numbers 1-90 into 9 buckets.
      * The first bucket has numbers from 1-9,
@@ -44,13 +47,21 @@ export default {
       return sets;
     },
     /**
+     * All the numbers
+     */
+    allNumbers() {
+      return new Array(90).fill(0).map((_, index) => index + 1);
+    }
+  },
+  methods: {
+    /**
      * The tickets baby!
      */
-    tickets() {
-      debugger;
+    getTickets() {
+      console.log("getTickets", this.$attrs.id);
       const allNumbers = this.allNumbers;
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
-      return tickets.map((ticket, index) => {
+      const generatedTickets = tickets.map((ticket, index) => {
         // For the last ticket, we short circuit it
         // Because at times the following while loop results in infinite loop.
         if (tickets.length - 1 === index) {
@@ -66,17 +77,27 @@ export default {
         } else {
           ticket = this.genRandomizedTicket();
         }
+        // Are all 6 valid tickets? if not, regenrate the tickets.
         return ticket;
       });
+      debugger;
+      const validityMatrix = generatedTickets.map(ticket =>
+        this.validateTicket(ticket)
+      );
+      console.log(validityMatrix);
+
+      const isAnyInvalid = validityMatrix.filter(Boolean).length !== 6;
+      if (isAnyInvalid) {
+        // Reset all picked numbers;
+        this.pickedNumbers = [];
+        const newTickets = this.getTickets();
+        console.log("Completed Generaton", this.$attrs.id);
+        return newTickets;
+      } else {
+        console.log("Completed Generaton", this.$attrs.id);
+        return generatedTickets;
+      }
     },
-    /**
-     * All the numbers
-     */
-    allNumbers() {
-      return new Array(90).fill(0).map((_, index) => index + 1);
-    }
-  },
-  methods: {
     genRandomizedTicket() {
       let ticket = this.getNewTicket();
       // We wanna do the work of filling numbers into ticket
@@ -123,6 +144,7 @@ export default {
       } else {
         // Remove those numbers from pickedNumbers list & redo the process.
         const ticketNumbers = ticket.flat();
+
         this.pickedNumbers = this.pickedNumbers.filter(
           num => !ticketNumbers.includes(num)
         );
@@ -145,7 +167,6 @@ export default {
       return val;
     },
     validateTicket(ticket) {
-      debugger;
       // Must have 15 numbers;
       const count = this.getTicketNumbersCount(ticket);
       if (count !== 15) {
