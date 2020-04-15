@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.4",
     "hash-sum": "^2.0.0",
+    "html2canvas": "^1.0.0-rc.5",
     "lodash-es": "^4.17.15",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
