@@ -35,6 +35,12 @@ export default {
   components: {
     TicketPage
   },
+  metaInfo() {
+    return {
+      title: `${this.playerName} - ${new Date().toString().substring(4, 10)}`,
+      titleTemplate: "%s - Tambola Tickets"
+    };
+  },
   data() {
     return {
       timestamp: new Date().getTime(),
