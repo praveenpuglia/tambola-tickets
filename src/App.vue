@@ -3,9 +3,20 @@
     <div class="action-buttons no-print">
       <button class="regenerate" @click="regenerate">Generate</button>
       <button class="print" @click="print">Print</button>
+      <input
+        type="text"
+        placeholder="Player Name"
+        name="playerName"
+        v-model="playerName"
+      />
+      <input min="1" max="6" name="count" type="number" v-model="ticketCount" />
     </div>
-    <TicketPage :key="`page_1_${timestamp}`" :page-color="getRandomColor()" />
-    <TicketPage :key="`page_2_${timestamp}`" :page-color="getRandomColor()" />
+    <TicketPage
+      :count="ticketCount"
+      :player="playerName"
+      :key="`page_1_${timestamp}`"
+      :page-color="getRandomColor()"
+    />
   </div>
 </template>
 
@@ -26,7 +37,9 @@ export default {
   },
   data() {
     return {
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
+      ticketCount: 6,
+      playerName: ""
     };
   },
   methods: {
@@ -45,24 +58,34 @@ export default {
 </script>
 <style lang="scss" scoped>
 #app {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   margin: auto;
-  width: max-content;
-  grid-gap: 1rem;
+  width: 350px;
 }
 .action-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  grid-column-end: span 2;
+  margin-bottom: 1rem;
+  input,
   button {
     border: 2px solid #444;
     background: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 0.5rem;
     margin: 0 0.5rem;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
+  }
+  .regenerate {
+    background: azure;
+  }
+  .print {
+    background: lavenderblush;
+  }
+  input[name="playerName"] {
+    max-width: 5rem;
+  }
+  input[name="count"] {
+    max-width: 5rem;
   }
 }
 @media print {

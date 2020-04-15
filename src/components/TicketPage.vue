@@ -1,8 +1,15 @@
 <template>
   <div class="ticket-page" :style="{ 'background-color': pageColor }">
+    <span class="ticket-page__claims">
+      <span class="ticket-page__claim" v-for="claim in claims" :key="claim">{{
+        claim
+      }}</span>
+    </span>
     <Ticket
       v-for="(ticket, index) in tickets"
+      v-show="index < count"
       :key="index"
+      :player="player"
       :numbers="ticket"
     ></Ticket>
   </div>
@@ -15,11 +22,21 @@ export default {
   name: "TicketPage",
   components: { Ticket },
   props: {
-    pageColor: String
+    pageColor: String,
+    player: {
+      type: String,
+      default: "Unknown Player"
+    },
+    count: {
+      default: 6,
+      type: Number
+    }
   },
   data() {
     return {
-      pickedNumbers: []
+      pickedNumbers: [],
+      trials: 0,
+      claims: ["T", "E5", "E7", "C", "F", "M", "L", "H1", "H2", "H3"]
     };
   },
   computed: {
@@ -58,6 +75,8 @@ export default {
      * The tickets baby!
      */
     getTickets() {
+      this.trials = 0;
+      console.log("getTickets");
       const allNumbers = this.allNumbers;
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const generatedTickets = tickets.map((ticket, index) => {
@@ -74,7 +93,12 @@ export default {
           const newTicket = this.getNewTicketFromList(remainingNumbers);
           ticket = [...newTicket];
         } else {
-          ticket = this.genRandomizedTicket();
+          try {
+            ticket = this.genRandomizedTicket();
+          } catch (e) {
+            console.error(e);
+            return [];
+          }
         }
         // Are all 6 valid tickets? if not, regenrate the tickets.
         return ticket;
@@ -95,6 +119,11 @@ export default {
       }
     },
     genRandomizedTicket() {
+      if (this.trials === 20) {
+        throw new Error("Can't generate ticket. Try again!");
+      }
+      this.trials++;
+      console.log("genRandomizedTicket");
       let ticket = this.getNewTicket();
       // We wanna do the work of filling numbers into ticket
       // till we have some space.
@@ -153,6 +182,7 @@ export default {
      * and then picks a random number out of that available number list
      */
     pickRandom() {
+      console.log("pickRandom");
       const numbersSet = new Set(this.allNumbers);
       const pickedNumbersSet = new Set(this.pickedNumbers);
       const availableNumbers = Array.from(
@@ -163,6 +193,7 @@ export default {
       return val;
     },
     validateTicket(ticket) {
+      console.log("validateTicket");
       // Must have 15 numbers;
       const count = this.getTicketNumbersCount(ticket);
       if (count !== 15) {
@@ -245,6 +276,7 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
+      console.log("getNewTicketFromList");
       const ticket = this.getNewTicket();
       numbers = shuffle(numbers);
       numbers.forEach(number => {
@@ -273,6 +305,19 @@ export default {
   max-width: 768px;
   border: 1px solid;
   padding: 1rem;
+  &__claims {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+  &__claim {
+    font-size: 0.75rem;
+    font-family: "Jetbrains Mono", "Courier New", Courier, monospace;
+    border: 1px solid #888;
+    padding: 1px;
+    border-collapse: collapse;
+    flex: 1;
+    text-align: center;
+  }
 }
 .ticket {
   margin-bottom: 1rem;

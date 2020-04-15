@@ -1,6 +1,9 @@
 <template>
   <div class="ticket">
-    <small class="ticket__id">{{ hash.toUpperCase() }}</small>
+    <div class="ticket__meta">
+      <small class="ticket__id">{{ hash.toUpperCase() }}</small>
+      <small class="ticket__id">{{ player }}</small>
+    </div>
     <table class="ticket__table">
       <tr v-for="(row, i) in numbers" :key="i">
         <td v-for="(col, j) in row" :key="j">
@@ -20,6 +23,9 @@ export default {
     numbers: {
       type: Array,
       required: true
+    },
+    player: {
+      type: String
     }
   },
   computed: {
@@ -31,6 +37,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ticket {
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &__id {
     font-size: 10px;
     font-family: "Jetbrains Mono", "Courier New", Courier, monospace;
