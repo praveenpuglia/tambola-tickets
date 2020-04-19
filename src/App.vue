@@ -39,18 +39,18 @@
 </template>
 
 <script>
-import TicketPage from "./components/TicketPage.vue";
-import html2canvas from "html2canvas";
+import TicketPage from './components/TicketPage.vue';
+import domtoimage from 'dom-to-image';
 const colors = [
-  "azure",
-  "honeydew",
-  "lavenderblush",
-  "ivory",
-  "aliceblue",
-  "seashell"
+  'azure',
+  'honeydew',
+  'lavenderblush',
+  'ivory',
+  'aliceblue',
+  'seashell'
 ];
 export default {
-  name: "App",
+  name: 'App',
   components: {
     TicketPage
   },
@@ -62,26 +62,28 @@ export default {
   metaInfo() {
     return {
       title: this.ticketTitle,
-      titleTemplate: "%s - Tambola Tickets"
+      titleTemplate: '%s - Tambola Tickets'
     };
   },
   data() {
     return {
       timestamp: new Date().getTime(),
       ticketCount: 6,
-      playerName: ""
+      playerName: ''
     };
   },
   methods: {
     download() {
-      html2canvas(document.querySelector(".ticket-page")).then(canvas => {
-        const a = document.createElement("a");
-        a.download = `${this.ticketTitle}.png`;
-        a.href = canvas.toDataURL("image/png");
-        document.body.append(a);
-        a.click();
-        a.remove();
-      });
+      domtoimage
+        .toJpeg(document.querySelector('.ticket-page'), { quality: 1 })
+        .then(dataUrl => {
+          const a = document.createElement('a');
+          a.download = `${this.ticketTitle}.jpeg`;
+          a.href = dataUrl;
+          document.body.append(a);
+          a.click();
+          a.remove();
+        });
     },
     getRandomColor() {
       const index = Math.floor(Math.random() * colors.length);
@@ -96,53 +98,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-#app {
-  margin: auto;
-  width: 350px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.actions {
-  margin-bottom: 1rem;
-  .buttons,
-  .player-details {
-    display: flex;
-    justify-content: space-between;
-  }
-  input,
-  button {
-    border: 2px solid goldenrod;
-    background: none;
-    font-size: 0.8rem;
-    border-radius: 0.5rem;
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
-  }
-  .regenerate {
-    background: azure;
-  }
-  .print {
-    background: lavenderblush;
-  }
-  .screenshot {
-    background: honeydew;
-  }
-  input[name="playerName"] {
-    max-width: 5rem;
-  }
-  input[name="count"] {
-    max-width: 2rem;
-  }
-  .player-details {
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-    border-top: 1px solid;
-  }
-}
-@media print {
-  .no-print {
-    display: none;
-  }
-}
-</style>

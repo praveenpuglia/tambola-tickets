@@ -5,10 +5,10 @@
       <small class="ticket__id">{{ player }}</small>
     </div>
     <table class="ticket__table">
-      <tr v-for="(row, i) in numbers" :key="i">
+      <tr v-for="(row, i) in sortedNumbers" :key="i">
         <td v-for="(col, j) in row" :key="j">
-          <span v-if="numbers[i][j]">
-            {{ numbers[i][j] }}
+          <span v-if="sortedNumbers[i][j]">
+            {{ sortedNumbers[i][j] }}
           </span>
         </td>
       </tr>
@@ -16,9 +16,10 @@
   </div>
 </template>
 <script>
-import * as sum from "hash-sum";
+import sum from 'hash-sum';
+import { unzip } from 'lodash-es';
 export default {
-  name: "Ticket",
+  name: 'Ticket',
   props: {
     numbers: {
       type: Array,
@@ -31,6 +32,36 @@ export default {
   computed: {
     hash() {
       return sum(this.numbers);
+    },
+    sortedNumbers() {
+      // For each column in the ticket
+      // Find out if there are cases when things need to be swapped.
+      // If they do, swap them to fix order and then send.
+      const ticket = unzip(this.numbers);
+      ticket.map(column => {
+        // Full column? Sort and return
+        const flattenedColumn = column.filter(Boolean);
+        if (flattenedColumn.length === 3) {
+          return column.sort();
+        }
+        // There are 3 cases for this. 1-2, 2-3, 1-3
+        debugger;
+        if (flattenedColumn.length === 2) {
+          // Find which cell is 0;
+          const zeroIndex = column.findIndex(cell => cell === 0);
+          const otherIndices = [0, 1, 2];
+          otherIndices.splice(zeroIndex, 1);
+          const o1 = otherIndices[0];
+          const o2 = otherIndices[1];
+          if (column[o1] > column[o2]) {
+            let temp = column[o1];
+            column[o1] = column[o2];
+            column[o2] = temp;
+          }
+        }
+        return column;
+      });
+      return unzip(ticket);
     }
   }
 };
@@ -44,7 +75,7 @@ export default {
   }
   &__id {
     font-size: 10px;
-    font-family: "Jetbrains Mono", "Courier New", Courier, monospace;
+    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
   }
   &__table {
     border-collapse: collapse;
@@ -54,7 +85,7 @@ export default {
       text-align: center;
       border: 1px solid #555;
       font-size: 1rem;
-      font-family: "Jetbrains Mono";
+      font-family: 'Jetbrains Mono';
       font-weight: bold;
     }
   }

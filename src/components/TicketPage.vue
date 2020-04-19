@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import Ticket from "./Ticket";
-import { shuffle } from "lodash-es";
+import Ticket from './Ticket';
+import { shuffle } from 'lodash-es';
 export default {
-  name: "TicketPage",
+  name: 'TicketPage',
   components: { Ticket },
   props: {
     pageColor: String,
     player: {
       type: String,
-      default: "Unknown Player"
+      default: 'Unknown Player'
     },
     count: {
       default: 6,
@@ -36,7 +36,7 @@ export default {
     return {
       pickedNumbers: [],
       trials: 0,
-      claims: ["T", "E5", "E7", "C", "F", "M", "L", "H1", "H2", "H3"]
+      claims: ['T', 'E5', 'E7', 'C', 'F', 'M', 'L', 'H1', 'H2', 'H3']
     };
   },
   computed: {
@@ -76,7 +76,7 @@ export default {
      */
     getTickets() {
       this.trials = 0;
-      console.log("getTickets");
+      console.log('getTickets');
       const allNumbers = this.allNumbers;
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const generatedTickets = tickets.map((ticket, index) => {
@@ -123,7 +123,7 @@ export default {
         throw new Error("Can't generate ticket. Try again!");
       }
       this.trials++;
-      console.log("genRandomizedTicket");
+      console.log('genRandomizedTicket');
       let ticket = this.getNewTicket();
       // We wanna do the work of filling numbers into ticket
       // till we have some space.
@@ -182,7 +182,7 @@ export default {
      * and then picks a random number out of that available number list
      */
     pickRandom() {
-      console.log("pickRandom");
+      console.log('pickRandom');
       const numbersSet = new Set(this.allNumbers);
       const pickedNumbersSet = new Set(this.pickedNumbers);
       const availableNumbers = Array.from(
@@ -193,7 +193,7 @@ export default {
       return val;
     },
     validateTicket(ticket) {
-      console.log("validateTicket");
+      console.log('validateTicket');
       // Must have 15 numbers;
       const count = this.getTicketNumbersCount(ticket);
       if (count !== 15) {
@@ -276,7 +276,7 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
-      console.log("getNewTicketFromList");
+      console.log('getNewTicketFromList');
       const ticket = this.getNewTicket();
       numbers = shuffle(numbers);
       numbers.forEach(number => {
@@ -303,7 +303,7 @@ export default {
 <style lang="scss" scoped>
 .ticket-page {
   max-width: 768px;
-  border: 1px solid;
+  border: 2px solid #999;
   padding: 1rem;
   &__claims {
     display: flex;
@@ -311,8 +311,8 @@ export default {
   }
   &__claim {
     font-size: 0.75rem;
-    font-family: "Jetbrains Mono", "Courier New", Courier, monospace;
-    border: 1px solid #888;
+    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
+    border: 1px solid;
     padding: 1px;
     border-collapse: collapse;
     flex: 1;
