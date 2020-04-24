@@ -2,7 +2,7 @@
   <div id="app">
     <div class="actions no-print">
       <div class="buttons">
-        <button class="regenerate" @click="regenerate">Generate</button>
+        <button class="regenerate" @click="regenerate">New Ticket</button>
         <button class="print" @click="print">PDF</button>
         <button class="screenshot" @click="download">Screenshot</button>
       </div>
@@ -75,10 +75,10 @@ export default {
   methods: {
     download() {
       domtoimage
-        .toJpeg(document.querySelector('.ticket-page'), { quality: 1 })
+        .toJpeg(document.querySelector('.ticket-page'))
         .then(dataUrl => {
           const a = document.createElement('a');
-          a.download = `${this.ticketTitle}.jpeg`;
+          a.download = `${this.ticketTitle}.png`;
           a.href = dataUrl;
           document.body.append(a);
           a.click();

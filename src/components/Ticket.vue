@@ -1,8 +1,8 @@
 <template>
   <div class="ticket">
     <div class="ticket__meta">
-      <small class="ticket__id">{{ hash.toUpperCase() }}</small>
-      <small class="ticket__id">{{ player }}</small>
+      <small class="ticket__meta-item">{{ hash.toUpperCase() }}</small>
+      <small class="ticket__meta-item ticket__meta-name">{{ player }}</small>
     </div>
     <table class="ticket__table">
       <tr v-for="(row, i) in sortedNumbers" :key="i">
@@ -72,10 +72,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  &__id {
-    font-size: 10px;
-    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
+    &-item {
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    &-name {
+      font-size: 13px;
+    }
   }
   &__table {
     border-collapse: collapse;
@@ -84,8 +88,8 @@ export default {
       width: 32px;
       text-align: center;
       border: 1px solid #555;
-      font-size: 1rem;
-      font-family: 'Jetbrains Mono';
+      font-size: 1.1rem;
+      font-family: 'Manrope', 'Menlo', 'Roboto Mono', 'Ubuntu Mono', monospace;
       font-weight: bold;
     }
   }
