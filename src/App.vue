@@ -56,13 +56,15 @@ export default {
   },
   computed: {
     ticketTitle() {
-      return `${this.playerName} - ${new Date().toString().substring(4, 10)}`;
+      return `${this.playerName} - ${
+        this.ticketCount
+      } Tickets - ${new Date().toString().substring(4, 10)}`;
     }
   },
   metaInfo() {
     return {
       title: this.ticketTitle,
-      titleTemplate: '%s - Tambola Tickets'
+      titleTemplate: '%s | Tambola Tickets'
     };
   },
   data() {
@@ -74,16 +76,40 @@ export default {
   },
   methods: {
     download() {
-      domtoimage
-        .toJpeg(document.querySelector('.ticket-page'))
-        .then(dataUrl => {
-          const a = document.createElement('a');
-          a.download = `${this.ticketTitle}.png`;
-          a.href = dataUrl;
-          document.body.append(a);
-          a.click();
-          a.remove();
+      if (navigator.share) {
+        domtoimage.toBlob(document.querySelector('.ticket-page')).then(blob => {
+          blob.lastModifiedDate = new Date();
+          blob.fileName = `${this.ticketTitle}.jpg`;
+          const files = [blob];
+          if (
+            navigator.canShare &&
+            navigator.canShare({
+              files: files
+            })
+          ) {
+            navigator
+              .share({
+                title: this.ticketTitle,
+                file: files
+              })
+              .then(() => console.log('Successful share'))
+              .catch(error => console.log('Error sharing', error));
+          } else {
+            alert('Web Share API is not supported in your browser.');
+          }
         });
+      } else {
+        domtoimage
+          .toJpeg(document.querySelector('.ticket-page'))
+          .then(dataUrl => {
+            const a = document.createElement('a');
+            a.download = `${this.ticketTitle}.png`;
+            a.href = dataUrl;
+            document.body.append(a);
+            a.click();
+            a.remove();
+          });
+      }
     },
     getRandomColor() {
       const index = Math.floor(Math.random() * colors.length);
