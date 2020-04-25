@@ -76,7 +76,7 @@ export default {
      */
     getTickets() {
       this.trials = 0;
-      console.log('getTickets');
+
       const allNumbers = this.allNumbers;
       const tickets = this.getNewArray(6).map(() => this.getNewTicket());
       const generatedTickets = tickets.map((ticket, index) => {
@@ -123,7 +123,7 @@ export default {
         throw new Error("Can't generate ticket. Try again!");
       }
       this.trials++;
-      console.log('genRandomizedTicket');
+
       let ticket = this.getNewTicket();
       // We wanna do the work of filling numbers into ticket
       // till we have some space.
@@ -182,7 +182,6 @@ export default {
      * and then picks a random number out of that available number list
      */
     pickRandom() {
-      console.log('pickRandom');
       const numbersSet = new Set(this.allNumbers);
       const pickedNumbersSet = new Set(this.pickedNumbers);
       const availableNumbers = Array.from(
@@ -193,7 +192,6 @@ export default {
       return val;
     },
     validateTicket(ticket) {
-      console.log('validateTicket');
       // Must have 15 numbers;
       const count = this.getTicketNumbersCount(ticket);
       if (count !== 15) {
@@ -276,7 +274,6 @@ export default {
       return new Array(size).fill(0);
     },
     getNewTicketFromList(numbers) {
-      console.log('getNewTicketFromList');
       const ticket = this.getNewTicket();
       numbers = shuffle(numbers);
       numbers.forEach(number => {

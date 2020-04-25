@@ -45,7 +45,6 @@ export default {
           return column.sort();
         }
         // There are 3 cases for this. 1-2, 2-3, 1-3
-        debugger;
         if (flattenedColumn.length === 2) {
           // Find which cell is 0;
           const zeroIndex = column.findIndex(cell => cell === 0);

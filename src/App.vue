@@ -4,7 +4,7 @@
       <div class="buttons">
         <button class="regenerate" @click="regenerate">New Ticket</button>
         <button class="print" @click="print">PDF</button>
-        <button class="screenshot" @click="download">Screenshot</button>
+        <button class="screenshot" @click="download">Share</button>
       </div>
       <div class="player-details">
         <label>
@@ -76,24 +76,26 @@ export default {
   },
   methods: {
     download() {
-      if (navigator.share) {
+      if (navigator.canShare) {
         domtoimage.toBlob(document.querySelector('.ticket-page')).then(blob => {
-          blob.lastModifiedDate = new Date();
-          blob.fileName = `${this.ticketTitle}.jpg`;
-          const files = [blob];
+          const file = new File([blob], `${this.ticketTitle}.jpg`, {
+            type: 'image/jpeg'
+          });
+          const files = [file];
           if (
-            navigator.canShare &&
             navigator.canShare({
               files: files
             })
           ) {
             navigator
               .share({
-                title: this.ticketTitle,
-                file: files
+                text: this.ticketTitle,
+                files
               })
               .then(() => console.log('Successful share'))
-              .catch(error => console.log('Error sharing', error));
+              .catch(error => {
+                console.log('Error sharing', error);
+              });
           } else {
             alert('Web Share API is not supported in your browser.');
           }
@@ -103,7 +105,7 @@ export default {
           .toJpeg(document.querySelector('.ticket-page'))
           .then(dataUrl => {
             const a = document.createElement('a');
-            a.download = `${this.ticketTitle}.png`;
+            a.download = `${this.ticketTitle}.jpg`;
             a.href = dataUrl;
             document.body.append(a);
             a.click();
