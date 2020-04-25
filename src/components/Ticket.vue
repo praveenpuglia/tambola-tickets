@@ -1,8 +1,8 @@
 <template>
   <div class="ticket">
     <div class="ticket__meta">
-      <small class="ticket__meta-item">{{ hash.toUpperCase() }}</small>
       <small class="ticket__meta-item ticket__meta-name">{{ player }}</small>
+      <small class="ticket__meta-item">{{ hash.toUpperCase() }}</small>
     </div>
     <table class="ticket__table">
       <tr v-for="(row, i) in sortedNumbers" :key="i">
@@ -78,6 +78,7 @@ export default {
     }
     &-name {
       font-size: 13px;
+      white-space: nowrap;
     }
   }
   &__table {
