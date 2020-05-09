@@ -1,5 +1,10 @@
 <template>
   <div class="ticket">
+    <table class="ticket__claims">
+      <td v-for="c in claims" :key="c" class="ticket__claim">
+        {{ c.toUpperCase() }}
+      </td>
+    </table>
     <div class="ticket__meta">
       <small class="ticket__meta-item ticket__meta-name">{{ player }}</small>
       <small class="ticket__meta-item">{{ hash.toUpperCase() }}</small>
@@ -20,6 +25,7 @@ import sum from 'hash-sum';
 import { unzip } from 'lodash-es';
 export default {
   name: 'Ticket',
+  inject: ['claim'],
   props: {
     numbers: {
       type: Array,
@@ -32,6 +38,9 @@ export default {
   computed: {
     hash() {
       return sum(this.numbers);
+    },
+    claims() {
+      return this.claim.input.split(',').map(claim => claim.trim());
     },
     sortedNumbers() {
       // For each column in the ticket
@@ -67,6 +76,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ticket {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed;
+  margin-bottom: 0.5rem;
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  &__claims {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 0.5rem;
+  }
+  &__claim {
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
+    border: 1px solid;
+    padding: 1px;
+  }
   &__meta {
     display: flex;
     align-items: center;
@@ -83,6 +112,7 @@ export default {
   }
   &__table {
     border-collapse: collapse;
+    width: 100%;
     td {
       height: 32px;
       width: 32px;

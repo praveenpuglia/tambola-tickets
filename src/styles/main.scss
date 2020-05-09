@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 #app {
   margin: auto;
   width: 350px;
@@ -5,13 +10,25 @@
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .actions {
-  margin-bottom: 1rem;
+  background: #74ebd5; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #acb6e5,
+    #74ebd5
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #acb6e5,
+    #74ebd5
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  padding: 0.5rem;
+
   .buttons,
   .player-details {
     display: flex;
     justify-content: space-between;
   }
-  input,
   button {
     border: 2px solid rebeccapurple;
     background: none;
@@ -33,18 +50,34 @@
     border-color: currentColor;
   }
   input {
+    margin: 0;
     border: 2px solid rebeccapurple;
+    padding: 0.5rem;
   }
-  input[name='playerName'] {
-    max-width: 5rem;
-  }
-  input[name='count'] {
-    max-width: 2rem;
+  .control-group {
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .control {
+      border-radius: 0.5rem;
+      margin-left: 0.5rem;
+      max-width: 100%;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      min-width: 0;
+    }
   }
   .player-details {
     padding-top: 0.5rem;
     margin-top: 0.5rem;
     border-top: 1px solid;
+    &__tickets {
+      margin-left: 0.5rem;
+    }
   }
 }
 @media print {

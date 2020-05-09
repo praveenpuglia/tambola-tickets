@@ -1,10 +1,5 @@
 <template>
   <div class="ticket-page" :style="{ 'background-color': pageColor }">
-    <span class="ticket-page__claims">
-      <span class="ticket-page__claim" v-for="claim in claims" :key="claim">{{
-        claim
-      }}</span>
-    </span>
     <Ticket
       v-for="(ticket, index) in tickets"
       v-show="index < count"
@@ -35,8 +30,7 @@ export default {
   data() {
     return {
       pickedNumbers: [],
-      trials: 0,
-      claims: ['T', 'E5', 'E7', 'C', 'F', 'M', 'L', 'H1', 'H2', 'H3']
+      trials: 0
     };
   },
   computed: {
@@ -302,21 +296,5 @@ export default {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   max-width: 768px;
   padding: 1rem;
-  &__claims {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-  &__claim {
-    font-size: 0.75rem;
-    font-family: 'Jetbrains Mono', 'Courier New', Courier, monospace;
-    border: 1px solid;
-    padding: 1px;
-    border-collapse: collapse;
-    flex: 1;
-    text-align: center;
-  }
-}
-.ticket {
-  margin-bottom: 1rem;
 }
 </style>

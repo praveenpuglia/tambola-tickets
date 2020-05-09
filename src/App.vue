@@ -7,23 +7,38 @@
         <button class="screenshot" @click="download">Share</button>
       </div>
       <div class="player-details">
-        <label>
-          <span>Player: </span>
+        <label class="control-group player-details__player">
+          <span>Player</span>
           <input
+            class="control"
             type="text"
+            size="16"
             placeholder="Player Name"
             name="playerName"
             v-model="playerName"
           />
         </label>
-        <label>
-          <span>Tickets: </span>
+        <label class="control-group player-details__tickets">
+          <span>Tickets</span>
           <input
+            class="control"
             min="1"
             max="6"
             name="count"
             type="number"
-            v-model="ticketCount"
+            v-model.number="ticketCount"
+          />
+        </label>
+      </div>
+      <div class="claim-details">
+        <label class="control-group">
+          <span>Claims</span>
+          <input
+            type="text"
+            name=""
+            class="claim-input control"
+            v-model.lazy="claim.input"
+            placeholder="comma separated list of claims"
           />
         </label>
       </div>
@@ -51,6 +66,11 @@ const colors = [
 ];
 export default {
   name: 'App',
+  provide() {
+    return {
+      claim: this.claim
+    };
+  },
   components: {
     TicketPage
   },
@@ -71,7 +91,10 @@ export default {
     return {
       timestamp: new Date().getTime(),
       ticketCount: 6,
-      playerName: ''
+      playerName: '',
+      claim: {
+        input: ''
+      }
     };
   },
   methods: {
@@ -126,3 +149,12 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.claim-details {
+  margin-top: 1rem;
+  .claim-input {
+    margin: 0;
+    width: 100%;
+  }
+}
+</style>
