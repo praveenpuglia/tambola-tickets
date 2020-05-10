@@ -1,10 +1,10 @@
 <template>
   <div class="ticket">
-    <table class="ticket__claims">
+    <!-- <table class="ticket__claims">
       <td v-for="c in claims" :key="c" class="ticket__claim">
         {{ c.toUpperCase() }}
       </td>
-    </table>
+    </table> -->
     <div class="ticket__meta">
       <small class="ticket__meta-item ticket__meta-name">{{ player }}</small>
       <small class="ticket__meta-item">{{ hash.toUpperCase() }}</small>
@@ -76,12 +76,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ticket {
-  padding-bottom: 0.5rem;
-  border-bottom: 1px dashed;
-  margin-bottom: 0.5rem;
-  &:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
+  padding-top: 1rem;
+  border-top: 1px dashed;
+  margin-top: 1rem;
+  &:first-child {
+    border-top: none;
+    margin-top: 0;
   }
   &__claims {
     border-collapse: collapse;

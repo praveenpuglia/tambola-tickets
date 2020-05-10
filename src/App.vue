@@ -36,7 +36,7 @@
           />
         </label>
       </div>
-      <div class="claim-details">
+      <div class="claim-details" v-if="false">
         <label class="control-group">
           <span>Claims</span>
           <input
