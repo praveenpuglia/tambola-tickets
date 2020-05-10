@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <div class="app-update" v-if="updateExists">
+      🎉 New Version Available!
+      <button @click="refreshApp">
+        Refresh
+      </button>
+    </div>
     <div class="actions no-print">
       <div class="buttons">
         <button class="regenerate" @click="regenerate">New Ticket</button>
@@ -74,6 +80,14 @@ export default {
   components: {
     TicketPage
   },
+  created() {
+    document.addEventListener('swUpdated', this.showRefreshUI, { once: true });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (this.refreshing) return;
+      this.refreshing = true;
+      window.location.reload();
+    });
+  },
   computed: {
     ticketTitle() {
       return `${this.playerName} - ${
@@ -92,6 +106,9 @@ export default {
       timestamp: new Date().getTime(),
       ticketCount: 6,
       playerName: '',
+      updateExists: false,
+      registration: null,
+      refreshing: false,
       claim: {
         input: ''
       }
@@ -136,6 +153,17 @@ export default {
           });
       }
     },
+    showRefreshUI(event) {
+      this.registration = event.detail;
+      this.updateExists = true;
+    },
+    refreshApp() {
+      this.updateExists = false;
+      if (!this.registration || !this.registration.waiting) {
+        return;
+      }
+      this.registration.waiting.postMessage('skipWaiting');
+    },
     getRandomColor() {
       const index = Math.floor(Math.random() * colors.length);
       return colors[index];
@@ -155,6 +183,26 @@ export default {
   .claim-input {
     margin: 0;
     width: 100%;
+  }
+}
+.app-update {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 1rem;
+  border: 2px solid;
+  background: white;
+  box-shadow: 0 2px 4px 0 rgba($color: #000000, $alpha: 0.3);
+  border-radius: 1rem;
+  button {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 2px solid;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    background: gold;
   }
 }
 </style>
