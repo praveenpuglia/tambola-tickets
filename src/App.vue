@@ -7,11 +7,6 @@
       </button>
     </div>
     <div class="actions no-print">
-      <div class="buttons">
-        <button class="regenerate" @click="regenerate">New Ticket</button>
-        <button class="print" @click="print">PDF</button>
-        <button class="screenshot" @click="download">Share</button>
-      </div>
       <div class="player-details">
         <label class="control-group player-details__player">
           <span>Player</span>
@@ -26,16 +21,24 @@
         </label>
         <label class="control-group player-details__tickets">
           <span>Tickets</span>
-          <input
-            class="control"
-            min="1"
-            max="6"
-            name="count"
-            type="number"
-            v-model.number="ticketCount"
-          />
+          <div class="control">
+            <span v-for="i in 6" :key="i" class="flex align-center"
+              >{{ i }}
+              <input
+                class="ml-2"
+                type="radio"
+                :value="i"
+                v-model.number="ticketCount"
+            /></span>
+          </div>
         </label>
       </div>
+      <div class="buttons">
+        <button class="regenerate" @click="regenerate">New Ticket</button>
+        <button class="print" @click="print">PDF</button>
+        <button class="screenshot" @click="download">Share</button>
+      </div>
+
       <div class="claim-details" v-if="false">
         <label class="control-group">
           <span>Claims</span>

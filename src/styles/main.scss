@@ -1,3 +1,4 @@
+@import './utils';
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,6 +20,9 @@
   .player-details {
     display: flex;
     justify-content: space-between;
+  }
+  .player-details {
+    flex-direction: column;
   }
   button {
     border: 2px solid rebeccapurple;
@@ -50,6 +54,8 @@
     span {
       font-size: 14px;
       font-weight: bold;
+      display: inline-block;
+      width: 100px;
     }
     .control {
       border-radius: 0.5rem;
@@ -62,15 +68,14 @@
     }
   }
   .player-details {
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-    border-top: 1px solid;
+    margin-bottom: 0.5rem;
+
     &__player {
       flex: 2;
+      margin-bottom: 0.5rem;
     }
     &__tickets {
       flex: 1;
-      margin-left: 0.5rem;
     }
   }
 }
