@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/tambola-tickets/' : '/',
+  publicPath: '/',
   pwa: {
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
