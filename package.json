@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -40,5 +40,8 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "volta": {
+    "node": "14.21.3"
   }
 }
