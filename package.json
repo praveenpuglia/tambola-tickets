@@ -9,11 +9,9 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "core-js": "^3.6.4",
     "dom-to-image": "^2.6.0",
     "hash-sum": "^2.0.0",
     "lodash-es": "^4.17.15",
-    "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-meta": "^2.3.3",
     "workbox-core": "^7.0.0",
@@ -23,24 +21,12 @@
     "@vitejs/plugin-vue2": "^2.3.3",
     "vite": "^4.4.0",
     "vite-plugin-pwa": "^0.16.4",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "lint-staged": "^9.5.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^2.8.0",
     "sass": "1.85.0",
-    "prettier": "^1.19.1",
     "vue-template-compiler": "^2.6.11"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue}": [
-      "eslint --fix",
-      "git add"
-    ]
   },
   "volta": {
     "node": "18.20.6"
