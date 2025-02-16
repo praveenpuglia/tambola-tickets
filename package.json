@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
     "core-js": "^3.6.4",
@@ -14,22 +15,22 @@
     "lodash-es": "^4.17.15",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
-    "vue-meta": "^2.3.3"
+    "vue-meta": "^2.3.3",
+    "workbox-core": "^7.0.0",
+    "workbox-precaching": "^7.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.3.0",
-    "@vue/cli-plugin-eslint": "~4.3.0",
-    "@vue/cli-plugin-pwa": "~4.3.0",
-    "@vue/cli-service": "~4.3.0",
+    "@vitejs/plugin-vue2": "^2.3.3",
+    "vite": "^4.4.0",
+    "vite-plugin-pwa": "^0.16.4",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.2.2",
     "lint-staged": "^9.5.0",
-    "node-sass": "^4.12.0",
+    "sass": "1.85.0",
     "prettier": "^1.19.1",
-    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
@@ -37,11 +38,11 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue}": [
-      "vue-cli-service lint",
+      "eslint --fix",
       "git add"
     ]
   },
   "volta": {
-    "node": "14.21.3"
+    "node": "16.20.2"
   }
 }
