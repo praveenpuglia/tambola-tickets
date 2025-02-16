@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Ticket from './Ticket';
+import Ticket from './Ticket.vue';
 import { shuffle } from 'lodash-es';
 export default {
   name: 'TicketPage',
